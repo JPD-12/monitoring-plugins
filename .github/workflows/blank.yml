@@ -1,24 +1,27 @@
-trigger:
-  - main
+name: Build Durable Functions Monitor React
 
-pool:
-  name: Azure Pipelines
-  vmImage: 'windows-2022'
-  demands: npm
+on:
+  push:
+    branches:
+      - main
 
-steps:
-- task: Npm@1
-  displayName: 'npm install durablefunctionsmonitor.react'
-  inputs:
-    command: custom
-    workingDir: durablefunctionsmonitor.react
-    verbose: false
-    customCommand: 'install -legacy-peer-deps'
+jobs:
+  build:
+    runs-on: windows-2022
 
-- task: Npm@1
-  displayName: 'npm build durablefunctionsmonitor.react'
-  inputs:
-    command: custom
-    workingDir: durablefunctionsmonitor.react
-    verbose: false
-    customCommand: 'run build'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install -legacy-peer-deps
+        working-directory: durablefunctionsmonitor.react
+
+      - name: Build project
+        run: npm run build
+        working-directory: durablefunctionsmonitor.react
