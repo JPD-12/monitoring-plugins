@@ -1,0 +1,24 @@
+trigger:
+- main
+
+pool:
+  name: Azure Pipelines
+  vmImage: 'windows-2022'
+  demands: npm
+
+steps:
+- task: Npm@1
+  displayName: 'npm install durablefunctionsmonitor.react'
+  inputs:
+    command: custom
+    workingDir: durablefunctionsmonitor.react
+    verbose: false
+    customCommand: 'install -legacy-peer-deps'
+
+- task: Npm@1
+  displayName: 'npm build durablefunctionsmonitor.react'
+  inputs:
+    command: custom
+    workingDir: durablefunctionsmonitor.react
+    verbose: false
+    customCommand: 'run build'
